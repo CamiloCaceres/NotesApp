@@ -1,0 +1,5 @@
+TODOS:
+write a la db en Editor
+new note btn TEST
+autofill title cuando no haya
+download txt

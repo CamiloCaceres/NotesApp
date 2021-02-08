@@ -1,64 +1,103 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar app dense color="primary" dark>
       <div class="d-flex align-center">
-        <v-img
-          alt="Vuetify Logo"
-          class="shrink mr-2"
-          contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-          transition="scale-transition"
-          width="40"
-        />
-
-        <v-img
-          alt="Vuetify Name"
-          class="shrink mt-1 hidden-sm-and-down"
-          contain
-          min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-          width="100"
-        />
+        <v-icon x-large>mdi-book-open-outline</v-icon>
+        <h2 class="ma-2">Notes App</h2>
       </div>
 
-      <v-spacer></v-spacer>
-
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+      <v-spacer> </v-spacer>
+      <div v-show="editor">
+        <v-btn class="ma-2" color="accent" v-on:click="editor = !editor">
+          Notes List
+        </v-btn>
+        <v-btn class="ma-2" color="accent"> Save </v-btn>
+      </div>
     </v-app-bar>
 
     <v-main>
-      <v-container>
-        <Read v-show="false" v-bind:notes="notes"> </Read>
-        <NoteList v-bind:notes="notes"> </NoteList></v-container>
+      <h1 v-if="currentNoteId">
+        EL ID ES: {{ currentNoteId }} {{ currentNote }}
+      </h1>
+
+      <transition>
+        <div v-show="editor">
+          <Editor
+            @updateCurrentId="setCurrentNote($event)"
+            :currentNote="currentNote"
+            :currentNoteId="currentNoteId"
+          />
+        </div>
+      </transition>
+      <transition>
+        <div v-show="!editor">
+          <NoteList
+            @openEditor="editor = $event"
+            @updateCurrentNote="setCurrentNote($event)"
+            :notes="notes"
+          >
+          </NoteList>
+        </div>
+      </transition>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Read from "./components/Read.vue";
 import NoteList from "./components/NoteList.vue";
+import Editor from "./components/Editor.vue";
 import { db } from "./db";
 
 export default {
   name: "App",
 
   components: {
-    Read,
-    NoteList
+    Editor,
+    NoteList,
   },
 
   data: () => ({
-    visible: false,
+    editor: true,
     notes: [],
+    currentNoteId: "",
+    currentNote: {},
+
     //
   }),
+
+  methods: {
+    setCurrentNote: function (id) {
+      this.currentNoteId = id;
+      this.getCurrentNote(id);
+    },
+    openEditor: function () {
+      this.editor = true;
+    },
+    getCurrentNote: function (id) {
+      if (this.currentNoteId) {
+        return db
+          .collection("Notes")
+          .doc(id)
+          .get()
+          .then((snapshot) => {
+            const document = snapshot.data();
+            this.currentNote = document;
+          });
+      } else {
+        return "no hay aún";
+      }
+    },
+  },
+  watch: {
+    currentNoteId: function () {
+      if (this.currentNoteId != "") {
+        this.setCurrentNote(this.currentNoteId);
+      }
+      else if(this.currentNoteId == ""){
+        this.currentNote = {}
+      }
+    },
+  },
   firestore: {
     notes: db.collection("Notes"),
   },

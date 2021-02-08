@@ -3,15 +3,13 @@
     <v-main>
       <v-container>
         <h2>Read</h2>
-        <h2>{{ currentNote }}</h2>
+
 
         <!-- LIST -->
         <v-list two-line>
-          <v-list-item-group multiple>
+          <v-list-item-group >
             <template v-for="(note, index) in notes">
-              <v-list-item :key="note.title" 
-              v-on:click="currentNote = note;
-              openRead()">
+              <v-list-item :key="note.id" v-on:click="handler(note)">
                 <template>
                   <v-list-item-content>
                     <v-list-item-title v-text="note.title"></v-list-item-title>
@@ -22,7 +20,7 @@
                     ></v-list-item-subtitle>
 
                     <v-list-item-subtitle
-                      v-text="note.subtitle"
+                      v-text="note.id"
                     ></v-list-item-subtitle>
                   </v-list-item-content>
 
@@ -47,6 +45,7 @@
 </template>
 
 <script>
+
 //import Read from "./Read.vue"
 
 export default {
@@ -56,12 +55,24 @@ export default {
     return {
       test: "unchanged",
       currentNote: {},
+      commp: "",
     };
   },
-  methods:{
-    
-    
-        
+
+  methods: {
+    setCurrentNote: function (note) {
+      this.currentNote = note;
+    },
+
+    sendCurrentNote: function (currentNote) {
+      this.$emit("updateCurrentNote", currentNote.id);
+    },
+    openEditor: function () {
+      this.$emit("openEditor", true);
+    },
+    handler: function (note) {
+      this.setCurrentNote(note), this.sendCurrentNote(note), this.openEditor();
+    },
   },
 };
 </script>
