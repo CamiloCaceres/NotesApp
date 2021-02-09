@@ -1,10 +1,7 @@
 <template>
   <div>
-  <v-btn @click="checkText()"> click </v-btn>
-  <h2 v-if="!isText"> NO HAY TEXTO</h2>
-    <v-text-field 
-    class="px-2"
-    v-model="currentNote.title"> </v-text-field>
+    <v-btn @click="createTitle">Test </v-btn>
+    <v-text-field class="px-2" v-model="currentNote.title"> </v-text-field>
     <v-alert transition="scale-transition" v-if="alert" :type="alertType">
       {{ alertText }}
     </v-alert>
@@ -39,6 +36,7 @@ export default {
       dbNotes: [],
       error: false,
       newNoteId: "",
+      isSaved: true,
       isText: false,
 
       //alert data:
@@ -61,19 +59,30 @@ export default {
   methods: {
     //pasar a newNoteHandler y poner un return a true o false
     //borrar data: isText
-    checkText: function(){
-      if(this.currentNote.text == "" || !this.currentNote.text){
-        this.isText = false
+    checkText: function () {
+      if (this.currentNote.text == "" || !this.currentNote.text) {
+        return false;
+      } else {
+        return true;
       }
-      else{
-        this.isText = true
+    },
+    createTitle: function(){
+      if (!this.currentNote.title){
+        console.log("no hay titulo")
       }
     },
     newNoteHandler: function () {
-      if (this.currentNoteId == "") {
-        this.create();
-      } else {
-        this.updateNote();
+      if (this.checkText()) {
+        if (this.currentNoteId == "") {
+          this.create();
+        } else {
+          this.updateNote();
+        }
+      }
+      else {
+        this.alert = true;
+        this.alertType = "error";
+        this.alertText = "El texto no puede estar vacío";
       }
     },
 

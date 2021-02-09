@@ -1,8 +1,11 @@
 TODOS:
 Show "NOT SAVED NOTE"
-validate "empty text" en editor
-add "Create" a "save"
 
 autofill title cuando no haya
 download txt
+
+authentication
+
+validate "empty text" en editor // completar en funcion handler //ya?
+add "Create" a "save" // ya?
 

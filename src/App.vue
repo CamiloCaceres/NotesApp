@@ -74,6 +74,7 @@ export default {
       
     },
     setCurrentNote: function (id) {
+      //if id empty, empty currentnote aswell
       this.currentNoteId = id;
       this.getCurrentNote(id);
     },
