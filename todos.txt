@@ -1,5 +1,8 @@
 TODOS:
-write a la db en Editor
-new note btn TEST
+Show "NOT SAVED NOTE"
+validate "empty text" en editor
+add "Create" a "save"
+
 autofill title cuando no haya
 download txt
+

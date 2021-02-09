@@ -7,18 +7,14 @@
       </div>
 
       <v-spacer> </v-spacer>
-      <div v-show="editor">
-        <v-btn class="ma-2" color="accent" v-on:click="editor = !editor">
+        <v-btn v-show="editor" class="ma-2" color="accent" v-on:click="editor = !editor">
           Notes List
-        </v-btn>
-        <v-btn class="ma-2" color="accent"> Save </v-btn>
-      </div>
+        </v-btn>        
+      <v-btn v-show="!editor" v-on:click="editor = !editor" class="ma-2" color="accent"> Editor </v-btn>
     </v-app-bar>
 
     <v-main>
-      <h1 v-if="currentNoteId">
-        EL ID ES: {{ currentNoteId }} {{ currentNote }}
-      </h1>
+ 
 
       <transition>
         <div v-show="editor">
@@ -32,6 +28,7 @@
       <transition>
         <div v-show="!editor">
           <NoteList
+          @deleteNote="deleteNote($event)"
             @openEditor="editor = $event"
             @updateCurrentNote="setCurrentNote($event)"
             :notes="notes"
@@ -60,12 +57,22 @@ export default {
     editor: true,
     notes: [],
     currentNoteId: "",
-    currentNote: {},
+    currentNote: {
+
+    },
 
     //
   }),
 
   methods: {
+    deleteNote: function(id){
+      db.collection("Notes").doc(id).delete().then(() => {
+    console.log("Document successfully deleted!");
+}).catch((error) => {
+    console.error("Error removing document: ", error);
+});
+      
+    },
     setCurrentNote: function (id) {
       this.currentNoteId = id;
       this.getCurrentNote(id);
