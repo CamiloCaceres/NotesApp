@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-btn @click="createTitle">Test </v-btn>
+
     <v-text-field class="px-2" v-model="currentNote.title"> </v-text-field>
     <v-alert transition="scale-transition" v-if="alert" :type="alertType">
       {{ alertText }}
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+
 import Footer from "./Footer.vue";
 
 import { db, Timestamp } from "../db";
@@ -66,12 +67,9 @@ export default {
         return true;
       }
     },
-    createTitle: function(){
-      if (!this.currentNote.title){
-        console.log("no hay titulo")
-      }
-    },
+
     newNoteHandler: function () {
+      //revisa que haya texto en text area, si no hay, manda alerta, luega direcciona a create o a updateNote
       if (this.checkText()) {
         if (this.currentNoteId == "") {
           this.create();
@@ -103,7 +101,8 @@ export default {
         this.alert = true;
         this.alertType = "success";
         this.alertText = "Nota creada";
-      } else {
+      }//puedo borrar este else? 
+      else {
         this.alert = true;
         this.alertType = "error";
         this.alertText = "Ya existe esta nota";
@@ -128,6 +127,7 @@ export default {
         });
     },
   },
+  //puedo borrar esto?
   firestore: {
     dbNotes: db.collection("Notes"),
   },

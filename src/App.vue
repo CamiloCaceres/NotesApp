@@ -7,10 +7,22 @@
       </div>
 
       <v-spacer> </v-spacer>
-        <v-btn v-show="editor" class="ma-2" color="accent" v-on:click="editor = !editor">
-          Notes List
-        </v-btn>        
-      <v-btn v-show="!editor" v-on:click="editor = !editor" class="ma-2" color="accent"> Editor </v-btn>
+      <v-btn
+        v-show="editor"
+        class="ma-2"
+        color="accent"
+        v-on:click="editor = !editor"
+      >
+        Notes List
+      </v-btn>
+      <v-btn
+        v-show="!editor"
+        v-on:click="editor = !editor"
+        class="ma-2"
+        color="accent"
+      >
+        Editor
+      </v-btn>
     </v-app-bar>
 
     <v-main>
@@ -28,7 +40,7 @@
       <transition>
         <div v-show="!editor">
           <NoteList
-          @deleteNote="deleteNote($event)"
+            @deleteNote="deleteNote($event)"
             @openEditor="editor = $event"
             @updateCurrentNote="setCurrentNote($event)"
             :notes="notes"
@@ -41,6 +53,8 @@
 </template>
 
 <script>
+import { truncate } from "lodash";
+
 import NoteList from "./components/NoteList.vue";
 import Editor from "./components/Editor.vue";
 import { db } from "./db";
@@ -57,26 +71,39 @@ export default {
     editor: true,
     notes: [],
     currentNoteId: "",
-    currentNote: {
+    currentNote: {},
 
-    },
-
-    //
   }),
 
   methods: {
-    deleteNote: function(id){
-      db.collection("Notes").doc(id).delete().then(() => {
-    console.log("Document successfully deleted!");
-}).catch((error) => {
-    console.error("Error removing document: ", error);
-});
-      
+    //Work on this
+    createTitle: function () {
+      if (this.currentNote.title == "" || !this.currentNote.title) {
+         (this.currentNote.title = ""),
+         (this.currentNote.title = truncate(this.currentNote.text, {
+          length: 24,
+          }));
+      }
+    },
+    deleteNote: function (id) {
+      db.collection("Notes")
+        .doc(id)
+        .delete()
+        .then(() => {
+          console.log("Document successfully deleted!");
+        })
+        .catch((error) => {
+          console.error("Error removing document: ", error);
+        });
     },
     setCurrentNote: function (id) {
-      //if id empty, empty currentnote aswell
-      this.currentNoteId = id;
-      this.getCurrentNote(id);
+      if (id == "") {
+        this.currentNoteId = id;
+        this.currentNote = {};
+      } else {
+        this.currentNoteId = id;
+        this.getCurrentNote(id);
+      }
     },
     openEditor: function () {
       this.editor = true;
@@ -100,9 +127,8 @@ export default {
     currentNoteId: function () {
       if (this.currentNoteId != "") {
         this.setCurrentNote(this.currentNoteId);
-      }
-      else if(this.currentNoteId == ""){
-        this.currentNote = {}
+      } else if (this.currentNoteId == "") {
+        this.currentNote = {};
       }
     },
   },

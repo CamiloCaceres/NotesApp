@@ -1,7 +1,12 @@
 TODOS:
 Show "NOT SAVED NOTE"
 
-autofill title cuando no haya
+autofill title cuando no haya:
+una func que siempre reciba el titulo, 
+revisa si esta vacio, > lo crea a partir del texto
+si tiene mas de x caracteres > truncate
+si esta bien de caracteres >no hace nada
+
 download txt
 
 authentication
