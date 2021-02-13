@@ -16,6 +16,7 @@
     <Footer
       @updateCurrentId="$emit('updateCurrentId', '')"
       @save="newNoteHandler()"
+      :isSaved="isSaved"
     />
   </div>
 </template>

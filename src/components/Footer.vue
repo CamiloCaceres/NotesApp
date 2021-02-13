@@ -4,6 +4,7 @@
     <v-footer
     fixed
     >
+    <h4>Status: {{ savedMessage }}</h4>
        <v-spacer></v-spacer>
  
     <v-btn class="ma-2" @click='$emit("updateCurrentId")'> NewNote </v-btn>
@@ -16,7 +17,25 @@
 
 
 <script>
-export default {};
+export default {
+  data (){
+    return{
+      savedMessage: "Not Saved"
+    }
+  },
+  props: ["isSaved"],
+  watch: {
+    isSaved: function (){
+      if (this.isSaved == true){
+        this.savedMessage = "Saved"
+      }
+      else{
+        this.savedMessage = "Not Saved"
+      }
+
+    }
+  },
+};
 </script>
 
 <style>

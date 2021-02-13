@@ -1,5 +1,9 @@
 TODOS:
-Show "NOT SAVED NOTE"
+Show "NOT SAVED NOTE" // cambiar colores ?
+
+cambiar watchers por computed
+
+Modals: Confirm delete, 
 
 autofill title cuando no haya:
 una func que siempre reciba el titulo, 
@@ -14,3 +18,10 @@ authentication
 validate "empty text" en editor // completar en funcion handler //ya?
 add "Create" a "save" // ya?
 
+add analytics
+
+firestore rules
+
+
+Features:
+modo edición complejo   
