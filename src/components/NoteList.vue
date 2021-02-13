@@ -1,14 +1,15 @@
 <template>
   <div>
-    <v-main color="grey">
       <v-container>
-        <h2>Notes</h2>
 
         <!-- LIST -->
         <v-list two-line>
-          <v-list-item-group>
+          <v-list-item-group               class="rounded-xl"
+>
             <template v-for="(note, index) in notes">
-              <v-list-item :key="note.id" >
+              <v-list-item 
+              :key="note.id"
+              >
                 <template >
                   <v-list-item-content @click="handler(note)">
                     <v-list-item-title v-text="note.title"></v-list-item-title>
@@ -16,10 +17,6 @@
                     <v-list-item-subtitle
                       class="text--primary"
                       v-text="note.text"
-                    ></v-list-item-subtitle>
-
-                    <v-list-item-subtitle
-                      v-text="note.id"
                     ></v-list-item-subtitle>
                   </v-list-item-content>
 
@@ -29,9 +26,7 @@
                   </v-list-item-action>
                 </template>
                 <v-list-item-action>
-                  <v-btn
-                  @click="$emit('deleteNote', note.id)"
-                   icon>
+                  <v-btn @click="$emit('deleteNote', note.id)" icon>
                     <v-icon color="grey lighten-1">mdi-delete </v-icon>
                   </v-btn>
                 </v-list-item-action>
@@ -46,7 +41,6 @@
         </v-list>
         <!-- LIST -->
       </v-container>
-    </v-main>
   </div>
 </template>
 

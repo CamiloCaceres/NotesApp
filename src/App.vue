@@ -1,33 +1,40 @@
 <template>
   <v-app>
-    <v-app-bar app dense color="primary" dark>
-      <div class="d-flex align-center">
-        <v-icon x-large>mdi-book-open-outline</v-icon>
-        <h2 class="ma-2">Notes App</h2>
-      </div>
-
-      <v-spacer> </v-spacer>
-      <v-btn
-        v-show="editor"
-        class="ma-2"
-        color="accent"
-        v-on:click="editor = !editor"
+    <v-container> </v-container>
+    <v-row no-gutters>
+      <v-col
+        offset="2"
+        md="
+     8"
+        class="d-flex justify-center"
       >
-        Notes List
-      </v-btn>
-      <v-btn
-        v-show="!editor"
-        v-on:click="editor = !editor"
-        class="ma-2"
-        color="accent"
+        <h1>notes.</h1></v-col
       >
-        Editor
-      </v-btn>
-    </v-app-bar>
+      <v-col md="1" offset="1">
+        <v-btn
+          v-show="editor"
+          class="ma-2"
+          color="accent"
+          v-on:click="editor = !editor"
+          fab
+          depressed
+        >
+          <v-icon> mdi-format-list-bulleted </v-icon>
+        </v-btn>
+        <v-btn
+          v-show="!editor"
+          v-on:click="editor = !editor"
+          class="ma-2"
+          color="accent"
+             fab
+          depressed
+        >
+          <v-icon> mdi-file-edit </v-icon>
+        </v-btn>
+      </v-col>
+    </v-row>
 
     <v-main>
- 
-
       <transition>
         <div v-show="editor">
           <Editor
@@ -72,16 +79,15 @@ export default {
     notes: [],
     currentNoteId: "",
     currentNote: {},
-
   }),
 
   methods: {
     //Work on this
     createTitle: function () {
       if (this.currentNote.title == "" || !this.currentNote.title) {
-         (this.currentNote.title = ""),
-         (this.currentNote.title = truncate(this.currentNote.text, {
-          length: 24,
+        (this.currentNote.title = ""),
+          (this.currentNote.title = truncate(this.currentNote.text, {
+            length: 24,
           }));
       }
     },
@@ -137,3 +143,8 @@ export default {
   },
 };
 </script>
+<style>
+#app {
+  background-color: #e6e6e6;
+}
+</style>

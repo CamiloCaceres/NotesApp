@@ -1,4 +1,8 @@
 TODOS:
+quiero vaciar app y mover más cosas a editor
+depronto textarea puede ser component?
+
+
 Show "NOT SAVED NOTE" // cambiar colores ?
 
 cambiar watchers por computed

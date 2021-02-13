@@ -1,16 +1,18 @@
 <template>
   <div>
+    <v-container id="text">
 
     <v-text-field class="px-2" v-model="currentNote.title"> </v-text-field>
     <v-alert transition="scale-transition" v-if="alert" :type="alertType">
       {{ alertText }}
     </v-alert>
+    
     <v-textarea
       v-model="currentNote.text"
       class="px-3"
       name=""
       label=""
-      rows="20"
+      rows="15"
     ></v-textarea>
 
     <Footer
@@ -18,6 +20,8 @@
       @save="newNoteHandler()"
       :isSaved="isSaved"
     />
+        </v-container>
+
   </div>
 </template>
 
@@ -39,7 +43,6 @@ export default {
       error: false,
       newNoteId: "",
       isSaved: true,
-      isText: false,
 
       //alert data:
       alert: false,
@@ -59,8 +62,6 @@ export default {
     },
   },
   methods: {
-    //pasar a newNoteHandler y poner un return a true o false
-    //borrar data: isText
     checkText: function () {
       if (this.currentNote.text == "" || !this.currentNote.text) {
         return false;
@@ -134,6 +135,8 @@ export default {
   },
 };
 </script>
-
 <style>
+#text {
+background-color: #e6e6e6;
+}
 </style>

@@ -2,13 +2,14 @@
   <template>
   <v-card >
     <v-footer
-    fixed
+    absolute
+    id="text"
     >
     <h4>Status: {{ savedMessage }}</h4>
        <v-spacer></v-spacer>
  
-    <v-btn class="ma-2" @click='$emit("updateCurrentId")'> NewNote </v-btn>
-    <v-btn class="ma-2" @click='$emit("save")'> Save </v-btn>
+    <v-btn class="ma-2" @click='$emit("updateCurrentId")' icon> <v-icon> mdi-file-plus</v-icon> </v-btn>
+    <v-btn class="ma-2" @click='$emit("save")' icon> <v-icon> mdi-check</v-icon></v-btn>
    
     </v-footer>
 
@@ -39,4 +40,7 @@ export default {
 </script>
 
 <style>
+#text {
+background-color: white;
+}
 </style>
