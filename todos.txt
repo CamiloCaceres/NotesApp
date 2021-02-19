@@ -2,6 +2,8 @@ TODOS:
 quiero vaciar app y mover más cosas a editor
 depronto textarea puede ser component?
 
+invis btn toggle delete
+
 
 Show "NOT SAVED NOTE" // cambiar colores ?
 

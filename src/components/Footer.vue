@@ -2,7 +2,7 @@
   <template>
   <v-card >
     <v-footer
-    absolute
+    fixed
     id="text"
     >
     <h4>Status: {{ savedMessage }}</h4>

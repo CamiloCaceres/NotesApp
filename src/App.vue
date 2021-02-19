@@ -1,6 +1,7 @@
 <template>
   <v-app>
-    <v-container> </v-container>
+        <v-main>
+
     <v-row no-gutters>
       <v-col
         offset="2"
@@ -8,7 +9,7 @@
      8"
         class="d-flex justify-center"
       >
-        <h1>notes.</h1></v-col
+        <h1 class="ma-4">notes.</h1></v-col
       >
       <v-col md="1" offset="1">
         <v-btn
@@ -34,7 +35,6 @@
       </v-col>
     </v-row>
 
-    <v-main>
       <transition>
         <div v-show="editor">
           <Editor
@@ -145,6 +145,5 @@ export default {
 </script>
 <style>
 #app {
-  background-color: #e6e6e6;
 }
 </style>

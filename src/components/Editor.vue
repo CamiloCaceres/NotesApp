@@ -1,39 +1,32 @@
 <template>
   <div>
     <v-container id="text">
+      <v-text-field class="ma-5" v-model="currentNote.title"> </v-text-field>
 
-    <v-text-field class="px-2" v-model="currentNote.title"> </v-text-field>
-    <v-alert transition="scale-transition" v-if="alert" :type="alertType">
-      {{ alertText }}
-    </v-alert>
-    
-    <v-textarea
-      v-model="currentNote.text"
-      class="px-3"
-      name=""
-      label=""
-      rows="15"
-    ></v-textarea>
-
-    <Footer
-      @updateCurrentId="$emit('updateCurrentId', '')"
-      @save="newNoteHandler()"
-      :isSaved="isSaved"
-    />
-        </v-container>
-
+<div id="bgEditor">
+      <VueEditor v-model="currentNote.text" />
+      </div>
+      <Footer
+        @updateCurrentId="$emit('updateCurrentId', '')"
+        @save="newNoteHandler()"
+        :isSaved="isSaved"
+      />
+            <v-alert transition="scale-transition" v-if="alert" :type="alertType">
+        {{ alertText }}
+      </v-alert>
+    </v-container>
   </div>
 </template>
 
 <script>
-
 import Footer from "./Footer.vue";
-
+import { VueEditor } from "vue2-editor/dist/vue2-editor.core.js";
 import { db, Timestamp } from "../db";
 
 export default {
   components: {
     Footer,
+    VueEditor,
   },
 
   props: ["currentNote", "currentNoteId"],
@@ -78,8 +71,7 @@ export default {
         } else {
           this.updateNote();
         }
-      }
-      else {
+      } else {
         this.alert = true;
         this.alertType = "error";
         this.alertText = "El texto no puede estar vacío";
@@ -103,7 +95,7 @@ export default {
         this.alert = true;
         this.alertType = "success";
         this.alertText = "Nota creada";
-      }//puedo borrar este else? 
+      } //puedo borrar este else?
       else {
         this.alert = true;
         this.alertType = "error";
@@ -137,6 +129,17 @@ export default {
 </script>
 <style>
 #text {
-background-color: #e6e6e6;
+
+
 }
+#bgEditor{
+    background-color: white,
+}
+@import "~vue2-editor/dist/vue2-editor.css";
+
+/* Import the Quill styles you want */
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
+
 </style>
