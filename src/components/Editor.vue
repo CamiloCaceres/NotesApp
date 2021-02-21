@@ -1,7 +1,5 @@
 <template>
   <div>
-    <v-btn @click="downloadTxt()">Create .txt</v-btn>
-    <v-btn @click="downloadHTML()">Create .html</v-btn>
 
     <v-container id="text">
       <v-text-field class="ma-5" v-model="currentNote.title"> </v-text-field>
@@ -12,11 +10,14 @@
           id="editor1"
           @text-change="autosave()"
           v-model="currentNote.text"
+          :editorOptions="editorSettings"
         />
       </div>
       <Footer
         @updateCurrentId="$emit('updateCurrentId', '')"
         @save="saveNote()"
+        @downloadTxt="downloadTxt()"
+        @downloadHTML="downloadHTML()"
         :isSaved="isSaved"
       />
       <v-alert transition="scale-transition" v-if="alert" :type="alertType">
@@ -33,6 +34,10 @@ import { db, Timestamp } from "../db";
 import { debounce } from "debounce";
 import { truncate } from "lodash";
 import { saveAs } from "file-saver";
+//import ImageResize from "quill-image-resize-module";
+
+//Quill.register("modules/imageResize", ImageResize);
+
 
 export default {
   components: {
@@ -53,6 +58,12 @@ export default {
       alert: false,
       alertType: "success",
       alertText: "",
+
+      editorSettings: {
+        modules: {
+         // imageResize: {}
+        }
+      }
     };
   },
 

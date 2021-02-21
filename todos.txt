@@ -1,24 +1,15 @@
 TODOS:
 quiero vaciar app y mover más cosas a editor
-depronto textarea puede ser component?
-
 
 img rezise
 
-
 cambiar watchers por computed
-
-
-download txt
 
 authentication
 
 add analytics
 
 firestore rules
-
-
-Features:
-modo edición complejo   
+ 
 
 
