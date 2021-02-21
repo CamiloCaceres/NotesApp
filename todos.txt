@@ -2,27 +2,16 @@ TODOS:
 quiero vaciar app y mover más cosas a editor
 depronto textarea puede ser component?
 
-invis btn toggle delete
 
+img rezise
 
-Show "NOT SAVED NOTE" // cambiar colores ?
 
 cambiar watchers por computed
 
-Modals: Confirm delete, 
-
-autofill title cuando no haya:
-una func que siempre reciba el titulo, 
-revisa si esta vacio, > lo crea a partir del texto
-si tiene mas de x caracteres > truncate
-si esta bien de caracteres >no hace nada
 
 download txt
 
 authentication
-
-validate "empty text" en editor // completar en funcion handler //ya?
-add "Create" a "save" // ya?
 
 add analytics
 
@@ -31,3 +20,5 @@ firestore rules
 
 Features:
 modo edición complejo   
+
+

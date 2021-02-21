@@ -1,17 +1,25 @@
 <template>
   <div>
+    <v-btn @click="downloadTxt()">Create .txt</v-btn>
+    <v-btn @click="downloadHTML()">Create .html</v-btn>
+
     <v-container id="text">
       <v-text-field class="ma-5" v-model="currentNote.title"> </v-text-field>
 
-<div id="bgEditor">
-      <VueEditor v-model="currentNote.text" />
+      <div id="bgEditor">
+        <VueEditor
+          @ready="setQuill($event)"
+          id="editor1"
+          @text-change="autosave()"
+          v-model="currentNote.text"
+        />
       </div>
       <Footer
         @updateCurrentId="$emit('updateCurrentId', '')"
-        @save="newNoteHandler()"
+        @save="saveNote()"
         :isSaved="isSaved"
       />
-            <v-alert transition="scale-transition" v-if="alert" :type="alertType">
+      <v-alert transition="scale-transition" v-if="alert" :type="alertType">
         {{ alertText }}
       </v-alert>
     </v-container>
@@ -22,6 +30,9 @@
 import Footer from "./Footer.vue";
 import { VueEditor } from "vue2-editor/dist/vue2-editor.core.js";
 import { db, Timestamp } from "../db";
+import { debounce } from "debounce";
+import { truncate } from "lodash";
+import { saveAs } from "file-saver";
 
 export default {
   components: {
@@ -35,7 +46,8 @@ export default {
       dbNotes: [],
       error: false,
       newNoteId: "",
-      isSaved: true,
+      isSaved: "Not Saved",
+      quillEditor: null,
 
       //alert data:
       alert: false,
@@ -55,7 +67,39 @@ export default {
     },
   },
   methods: {
-    checkText: function () {
+    downloadTxt() {
+      let text = this.quillEditor.getText();
+      const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+      saveAs(blob, this.currentNote.title + ".txt");
+    },
+    downloadHTML() {
+      const blob = new Blob([this.currentNote.text], { type: "text/html" });
+      saveAs(blob, this.currentNote.title + ".html");
+    },
+    setQuill(event) {
+      this.quillEditor = event;
+    },
+
+    autosave() {
+      this.isSaved = "Not Saved";
+      if (this.currentNoteId != "") {
+        this.debouncedSave();
+      }
+    },
+    debouncedSave: debounce(function () {
+      this.saveNote();
+    }, 1500),
+
+    checkTitle() {
+      if (this.currentNote.title == "" || !this.currentNote.title) {
+        let text = this.quillEditor.getText();
+        this.currentNote.title = truncate(text, {
+          lenght: 32,
+        });
+      }
+    },
+
+    checkText() {
       if (this.currentNote.text == "" || !this.currentNote.text) {
         return false;
       } else {
@@ -63,9 +107,11 @@ export default {
       }
     },
 
-    newNoteHandler: function () {
+    saveNote() {
+      this.isSaved = "Saving...";
       //revisa que haya texto en text area, si no hay, manda alerta, luega direcciona a create o a updateNote
       if (this.checkText()) {
+        this.checkTitle();
         if (this.currentNoteId == "") {
           this.create();
         } else {
@@ -78,9 +124,10 @@ export default {
       }
     },
 
-    create: function () {
+    async create() {
       if (this.currentNoteId == "") {
-        db.collection("Notes")
+        await db
+          .collection("Notes")
           .add({
             title: this.currentNote.title,
             text: this.currentNote.text,
@@ -88,6 +135,7 @@ export default {
           })
           .then((docRef) => {
             this.newNoteId = docRef.id;
+            this.isSaved = "Saved";
           })
           .catch((error) => {
             console.error("Error adding document: ", error);
@@ -102,8 +150,9 @@ export default {
         this.alertText = "Ya existe esta nota";
       }
     },
-    updateNote: function () {
-      db.collection("Notes")
+    async updateNote() {
+      await db
+        .collection("Notes")
         .doc(this.currentNoteId)
         .set({
           title: this.currentNote.title,
@@ -112,34 +161,23 @@ export default {
           updated: Timestamp.now(),
         })
         .then(() => {
-          this.alert = true;
-          this.alertType = "success";
-          this.alertText = "Nota Actualizada";
+          this.isSaved = "Saved";
         })
         .catch((error) => {
           console.error("Error writing document: ", error);
         });
     },
   },
-  //puedo borrar esto?
-  firestore: {
-    dbNotes: db.collection("Notes"),
-  },
 };
 </script>
 <style>
-#text {
-
-
-}
-#bgEditor{
-    background-color: white,
+#bgEditor {
+  background-color: white;
 }
 @import "~vue2-editor/dist/vue2-editor.css";
 
 /* Import the Quill styles you want */
-@import '~quill/dist/quill.core.css';
-@import '~quill/dist/quill.bubble.css';
-@import '~quill/dist/quill.snow.css';
-
+@import "~quill/dist/quill.core.css";
+@import "~quill/dist/quill.bubble.css";
+@import "~quill/dist/quill.snow.css";
 </style>

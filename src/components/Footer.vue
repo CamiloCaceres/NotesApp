@@ -5,7 +5,7 @@
     fixed
     id="text"
     >
-    <h4>Status: {{ savedMessage }}</h4>
+    <h4>Status: {{ isSaved }}</h4>
        <v-spacer></v-spacer>
  
     <v-btn class="ma-2" @click='$emit("updateCurrentId")' icon> <v-icon> mdi-file-plus</v-icon> </v-btn>
@@ -21,21 +21,10 @@
 export default {
   data (){
     return{
-      savedMessage: "Not Saved"
     }
   },
   props: ["isSaved"],
-  watch: {
-    isSaved: function (){
-      if (this.isSaved == true){
-        this.savedMessage = "Saved"
-      }
-      else{
-        this.savedMessage = "Not Saved"
-      }
 
-    }
-  },
 };
 </script>
 
